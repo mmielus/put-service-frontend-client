@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getAllPolls, getUserCreatedPolls, getUserVotedPolls } from '../util/APIUtils';
+import { getAllOffers, getUserCreatedOffers, getUserVotedOffers } from '../util/APIUtils';
 import Poll from './Poll';
 import { castVote } from '../util/APIUtils';
 import LoadingIndicator  from '../common/LoadingIndicator';
@@ -12,7 +12,7 @@ class PollList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            polls: [],
+            offers: [],
             page: 0,
             size: 10,
             totalElements: 0,
@@ -29,12 +29,12 @@ class PollList extends Component {
         let promise;
         if(this.props.username) {
             if(this.props.type === 'USER_CREATED_POLLS') {
-                promise = getUserCreatedPolls(this.props.username, page, size);
+                promise = getUserCreatedOffers(this.props.username, page, size);
             } else if (this.props.type === 'USER_VOTED_POLLS') {
-                promise = getUserVotedPolls(this.props.username, page, size);                               
+                promise = getUserVotedOffers(this.props.username, page, size);
             }
         } else {
-            promise = getAllPolls(page, size);
+            promise = getAllOffers(page, size);
         }
 
         if(!promise) {
@@ -47,11 +47,11 @@ class PollList extends Component {
 
         promise            
         .then(response => {
-            const polls = this.state.polls.slice();
+            const polls = this.state.offers.slice();
             const currentVotes = this.state.currentVotes.slice();
 
             this.setState({
-                polls: polls.concat(response.content),
+                offers: polls.concat(response.content),
                 page: response.page,
                 size: response.size,
                 totalElements: response.totalElements,
@@ -76,7 +76,7 @@ class PollList extends Component {
         if(this.props.isAuthenticated !== nextProps.isAuthenticated) {
             // Reset State
             this.setState({
-                polls: [],
+                offers: [],
                 page: 0,
                 size: 10,
                 totalElements: 0,
@@ -114,20 +114,20 @@ class PollList extends Component {
             return;
         }
 
-        const poll = this.state.polls[pollIndex];
+        const poll = this.state.offers[pollIndex];
         const selectedChoice = this.state.currentVotes[pollIndex];
 
         const voteData = {
-            pollId: poll.id,
+            offerId: poll.id,
             choiceId: selectedChoice
         };
 
         castVote(voteData)
         .then(response => {
-            const polls = this.state.polls.slice();
+            const polls = this.state.offers.slice();
             polls[pollIndex] = response;
             this.setState({
-                polls: polls
+                offers: polls
             });        
         }).catch(error => {
             if(error.status === 401) {
@@ -143,7 +143,7 @@ class PollList extends Component {
 
     render() {
         const pollViews = [];
-        this.state.polls.forEach((poll, pollIndex) => {
+        this.state.offers.forEach((poll, pollIndex) => {
             pollViews.push(<Poll 
                 key={poll.id} 
                 poll={poll}
@@ -156,7 +156,7 @@ class PollList extends Component {
             <div className="polls-container">
                 {pollViews}
                 {
-                    !this.state.isLoading && this.state.polls.length === 0 ? (
+                    !this.state.isLoading && this.state.offers.length === 0 ? (
                         <div className="no-polls-found">
                             <span>No Polls Found.</span>
                         </div>    

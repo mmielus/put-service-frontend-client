@@ -108,10 +108,6 @@ class Profile extends Component {
                                     <TabPane tab={`${this.state.user.voteCount} Votes`} key="2">
                                         <OfferList username={this.props.match.params.username} type="USER_VOTED_POLLS"/>
                                     </TabPane>
-                                    <TabPane tab={`${this.state.user.voteCount} Archived`}
-                                             disabled={!(this.props.isAuthenticated)} key="3">
-                                        <OfferList username={this.props.match.params.username} type="USER_VOTED_POLLS"/>
-                                    </TabPane>
                                 </Tabs>
                             </div>
                         </div>

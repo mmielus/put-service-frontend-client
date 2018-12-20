@@ -34,7 +34,7 @@ class AppHeader extends Component {
                 </Menu.Item>,
                 <Menu.Item key="/offers/archived">
                     <Link to="/offers/archived">
-                        <img src={offerIcon} alt="offers" className="poll-icon"/>
+                        <Icon type="database" className="poll-icon"/>
                     </Link>
                 </Menu.Item>,
                 <Menu.Item key="/profile" className="profile-menu">

@@ -5,7 +5,8 @@ import {Route, Switch, withRouter} from 'react-router-dom';
 import {getCurrentUser} from '../util/APIUtils';
 import {ACCESS_TOKEN} from '../constants';
 
-import PollList from '../offer/OffersList';
+import ArchivedOffersList from '../offer/ArchivedOffersList';
+import OffersList from '../offer/OffersList';
 import NewOffer from '../offer/NewOffer';
 import Login from '../user/login/Login';
 import Signup from '../user/signup/Signup';
@@ -99,9 +100,9 @@ class App extends Component {
                     <div className="container">
                         <Switch>
                             <Route exact path="/"
-                                   render={(props) => <PollList isAuthenticated={this.state.isAuthenticated}
-                                                                currentUser={this.state.currentUser}
-                                                                handleLogout={this.handleLogout} {...props} />}>
+                                   render={(props) => <OffersList isAuthenticated={this.state.isAuthenticated}
+                                                                  currentUser={this.state.currentUser}
+                                                                  handleLogout={this.handleLogout} {...props} />}>
                             </Route>
                             <Route path="/login"
                                    render={(props) => <Login onLogin={this.handleLogin} {...props} />}/>
@@ -112,8 +113,9 @@ class App extends Component {
                             </Route>
                             <PrivateRoute authenticated={this.state.isAuthenticated} path="/offer/new"
                                           component={NewOffer} handleLogout={this.handleLogout}/>
-                            <PrivateRoute authenticated={this.state.isAuthenticated} path="/offers/archived"
-                                          component={NewOffer} handleLogout={this.handleLogout}/>
+                            <Route exact path="/offers/archived"
+                                   render={(props) => <ArchivedOffersList type="ARCHIVED_OFFERS" {...props}/>}>
+                            </Route>
 
                             <Route component={NotFound}></Route>
                         </Switch>

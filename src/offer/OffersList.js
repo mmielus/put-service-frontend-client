@@ -32,7 +32,9 @@ class OffersList extends Component {
             } else if (this.props.type === 'USER_VOTED_POLLS') {
                 promise = getUserVotedOffers(this.props.username, page, size);
             }
-        } else {
+        }
+        else {
+
             promise = getAllOffers(page, size);
         }
 
@@ -114,11 +116,9 @@ class OffersList extends Component {
         }
         const currentVotes = this.state.currentVotes.slice();
         currentVotes[offerIndex] = event.target.value;
-
         this.setState({
             currentVotes: currentVotes
         });
-
         const offer = this.state.offers[offerIndex];
         const selectedChoice = this.state.currentVotes[offerIndex];
 

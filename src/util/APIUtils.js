@@ -23,27 +23,27 @@ const request = (options) => {
     );
 };
 
-export function getAllPolls(page, size) {
+export function getAllOffers(page, size) {
     page = page || 0;
     size = size || POLL_LIST_SIZE;
 
     return request({
-        url: API_BASE_URL + "/polls?page=" + page + "&size=" + size,
+        url: API_BASE_URL + "/offers?page=" + page + "&size=" + size,
         method: 'GET'
     });
 }
 
-export function createPoll(pollData) {
+export function createOffer(offerData) {
     return request({
-        url: API_BASE_URL + "/polls",
+        url: API_BASE_URL + "/offers",
         method: 'POST',
-        body: JSON.stringify(pollData)         
+        body: JSON.stringify(offerData)
     });
 }
 
 export function castVote(voteData) {
     return request({
-        url: API_BASE_URL + "/polls/" + voteData.pollId + "/votes",
+        url: API_BASE_URL + "/offers/" + voteData.offerId + "/votes",
         method: 'POST',
         body: JSON.stringify(voteData)
     });
@@ -98,17 +98,17 @@ export function getUserProfile(username) {
     });
 }
 
-export function getUserCreatedPolls(username, page, size) {
+export function getUserCreatedOffers(username, page, size) {
     page = page || 0;
     size = size || POLL_LIST_SIZE;
 
     return request({
-        url: API_BASE_URL + "/users/" + username + "/polls?page=" + page + "&size=" + size,
+        url: API_BASE_URL + "/users/" + username + "/offers?page=" + page + "&size=" + size,
         method: 'GET'
     });
 }
 
-export function getUserVotedPolls(username, page, size) {
+export function getUserVotedOffers(username, page, size) {
     page = page || 0;
     size = size || POLL_LIST_SIZE;
 

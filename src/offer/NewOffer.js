@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {createOffer} from '../util/APIUtils';
 import {MAX_CHOICES, POLL_CHOICE_MAX_LENGTH, POLL_QUESTION_MAX_LENGTH} from '../constants';
-import './NewPoll.css';
+import './NewOffer.css';
 import {Button, Col, Form, Icon, Input, notification, Select} from 'antd';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
 const {TextArea} = Input
 
-class NewPoll extends Component {
+class NewOffer extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -48,6 +48,12 @@ class NewPoll extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
         this.handleDimensionChange = this.handleDimensionChange.bind(this);
+        this.handleCityChange = this.handleCityChange.bind(this);
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handleHouseNumberChange = this.handleHouseNumberChange.bind(this);
+        this.handlePhoneNumberChange = this.handlePhoneNumberChange.bind(this);
+        this.handleStreetChange = this.handleStreetChange.bind(this);
+        this.handlePaymentChange = this.handlePaymentChange.bind(this);
         this.handlePollDaysChange = this.handlePollDaysChange.bind(this);
         this.handlePollHoursChange = this.handlePollHoursChange.bind(this);
         this.isFormInvalid = this.isFormInvalid.bind(this);
@@ -165,8 +171,10 @@ class NewPoll extends Component {
     handlePhoneNumberChange(event) {
         const value = event.target.value;
         this.setState({
-            phoneNumber: value,
-            ...this.validatePhoneNumber(value)
+            phoneNumber: {
+                text: value,
+                ...this.validatePhoneNumber(value)
+            }
         });
     }
 
@@ -187,12 +195,14 @@ class NewPoll extends Component {
     handleEmailChange(event) {
         const value = event.target.value;
         this.setState({
-            email: value,
-            ...this.validateEmail(value)
+            email: {
+                text: value,
+                ...this.validateEmail(value)
+            },
         });
     }
 
-    validatePhoneNumber = (emailText) => {
+    validateEmail = (emailText) => {
         if (emailText.length === 0) {
             return {
                 validateStatus: 'error',
@@ -206,15 +216,18 @@ class NewPoll extends Component {
         }
     }
 
-    handleCItyChange(event) {
+    handleCityChange(event) {
         const value = event.target.value;
         this.setState({
-            city: value,
-            ...this.validateCity(value)
+            city: {
+                text: value,
+                ...this.validateCity(value)
+            }
+
         });
     }
 
-    validateCityText = (cityText) => {
+    validateCity = (cityText) => {
         if (cityText.length === 0) {
             return {
                 validateStatus: 'error',
@@ -231,8 +244,10 @@ class NewPoll extends Component {
     handleStreetChange(event) {
         const value = event.target.value;
         this.setState({
-            street: value,
-            ...this.validateStreet(value)
+            street: {
+                text: value,
+                ...this.validateStreet(value)
+            }
         });
     }
 
@@ -253,8 +268,11 @@ class NewPoll extends Component {
     handleHouseNumberChange(event) {
         const value = event.target.value;
         this.setState({
-            houseNumber: value,
-            ...this.validateHouseNumber(value)
+            houseNumber: {
+                text: value,
+                ...this.validateHouseNumber(value)
+            }
+
         });
     }
 
@@ -263,6 +281,31 @@ class NewPoll extends Component {
             return {
                 validateStatus: 'error',
                 errorMsg: 'Please enter a number of house'
+            }
+        } else {
+            return {
+                validateStatus: 'success',
+                errorMsg: null
+            }
+        }
+    }
+
+    handlePaymentChange(event) {
+        const value = event.target.value;
+        this.setState({
+            payment: {
+                text: value,
+                ...this.validatePayment(value)
+            }
+
+        });
+    }
+
+    validatePayment = (payment) => {
+        if (payment.length === 0) {
+            return {
+                validateStatus: 'error',
+                errorMsg: 'Please enter a payment value'
             }
         } else {
             return {
@@ -336,42 +379,42 @@ class NewPoll extends Component {
                                 size="large"
                                 value={this.state.phoneNumber.text}
                                 className={"optional-choice"}
-                                onChange={(event) => this.props.handlePhoneNumberChange(event)}/>
+                                onChange={(event) => this.handlePhoneNumberChange(event)}/>
                         </FormItem>
                         <FormItem className="poll-form-row">
                             <Input
                                 placeholder={'Email'}
                                 size="large"
                                 value={this.state.email.text}
-                                onChange={(event) => this.props.handleEmailChange(event)}/>
+                                onChange={this.handleEmailChange}/>
                         </FormItem>
                         <FormItem className="poll-form-row">
                             <Input
                                 placeholder={'City'}
                                 size="large"
                                 value={this.state.city.text}
-                                onChange={(event) => this.props.handleCItyChange(event)}/>
+                                onChange={(event) => this.handleCityChange(event)}/>
                         </FormItem>
                         <FormItem className="poll-form-row">
                             <Input
                                 placeholder={'Street'}
                                 size="large"
                                 value={this.state.street.text}
-                                onChange={(event) => this.props.handleStreetChange(event)}/>
+                                onChange={(event) => this.handleStreetChange(event)}/>
                         </FormItem>
                         <FormItem className="poll-form-row">
                             <Input
                                 placeholder={'House number'}
                                 size="large"
                                 value={this.state.houseNumber.text}
-                                onChange={(event) => this.props.handleHouseNumberChange(event)}/>
+                                onChange={(event) => this.handleHouseNumberChange(event)}/>
                         </FormItem>
                         <FormItem className="poll-form-row">
                             <Input
                                 placeholder={'Payment'}
                                 size="large"
-                                value={this.state.houseNumber.text}
-                                onChange={(event) => this.props.handleHouseNumberChange(event)}/>
+                                value={this.state.payment.text}
+                                onChange={(event) => this.handlePaymentChange(event)}/>
                         </FormItem>
                         <FormItem className="poll-form-row">
                             <Col xs={24} sm={4}>
@@ -447,4 +490,4 @@ function PollChoice(props) {
 }
 
 
-export default NewPoll;
+export default NewOffer;

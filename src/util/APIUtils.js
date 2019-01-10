@@ -49,6 +49,22 @@ export function castVote(voteData) {
     });
 }
 
+export function setOfferAsObserved(observedOfferData) {
+    return request({
+        url: API_BASE_URL + "/offers/" + observedOfferData.offerId + "/observe",
+        method: 'POST',
+        body: JSON.stringify(observedOfferData)
+    });
+}
+
+export function setOfferAsArchived(archivedOfferData) {
+    return request({
+        url: API_BASE_URL + "/offers/" + archivedOfferData.offerId + "/archive",
+        method: 'POST',
+        body: JSON.stringify(archivedOfferData)
+    });
+}
+
 export function login(loginRequest) {
     return request({
         url: API_BASE_URL + "/auth/signin",
@@ -124,6 +140,16 @@ export function getArchivedOffers(page, size) {
 
     return request({
         url: API_BASE_URL + "/offers/archived?page=" + page + "&size=" + size,
+        method: 'GET'
+    });
+}
+
+export function getObservedOffers(page, size) {
+    page = page || 0;
+    size = size || POLL_LIST_SIZE;
+
+    return request({
+        url: API_BASE_URL + "/offers/observed?page=" + page + "&size=" + size,
         method: 'GET'
     });
 }

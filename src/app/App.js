@@ -17,6 +17,7 @@ import LoadingIndicator from '../common/LoadingIndicator';
 import PrivateRoute from '../common/PrivateRoute';
 
 import {Layout, notification} from 'antd';
+import ObservedOffersList from "../offer/ObservedOffersList";
 
 const {Content} = Layout;
 
@@ -72,14 +73,14 @@ class App extends Component {
         this.props.history.push(redirectTo);
 
         notification[notificationType]({
-            message: 'Polling App',
+            message: 'PutService',
             description: description,
         });
     }
 
     handleLogin() {
         notification.success({
-            message: 'Polling App',
+            message: 'PutService',
             description: "You're successfully logged in.",
         });
         this.loadCurrentUser();
@@ -113,8 +114,14 @@ class App extends Component {
                             </Route>
                             <PrivateRoute authenticated={this.state.isAuthenticated} path="/offer/new"
                                           component={NewOffer} handleLogout={this.handleLogout}/>
+
                             <Route exact path="/offers/archived"
-                                   render={(props) => <ArchivedOffersList type="ARCHIVED_OFFERS" {...props}/>}>
+                                   render={(props) => <ArchivedOffersList isAuthenticated={this.state.isAuthenticated}
+                                                                          type="ARCHIVED_OFFERS" {...props}/>}>
+                            </Route>
+                            <Route exact path="/offers/observed"
+                                   render={(props) => <ObservedOffersList isAuthenticated={this.state.isAuthenticated}
+                                                                          type="OBSERVED_OFFERS" {...props}/>}>
                             </Route>
 
                             <Route component={NotFound}></Route>

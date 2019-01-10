@@ -125,15 +125,24 @@ class Offer extends Component {
 
                     <Button className="vote-button"
                             onClick={this.props.handleVoteSubmit} value={1} htmlType={'default'}>+</Button>
-                    <span className="total-votes">{this.props.offer.plusVotes} votes </span>
+                    <span className="total-votes">{this.props.offer.plusVotes} votes  </span>
                     <Button className="vote-button"
                             onClick={this.props.handleVoteSubmit} value={0}>-</Button>
                     <span className="total-votes">{this.props.offer.minusVotes} votes</span>
                     <span className="separator">•</span>
                     <span className="time-left">
                 {this.getTimeRemaining(this.props.offer)}
+                    </span>
+                    <Button className="observe-button"
+                            onClick={this.props.handleArchiveOfferSubmit}
+                            disabled={this.props.makeArchive !== true}
+                            htmlType={'default'}>Archive</Button>
 
-                </span>
+                    <Button className="observe-button"
+                            onClick={this.props.handleObservedOfferSubmit}
+                            disabled={this.props.observeType === "OBSERVED"}
+                            htmlType={'default'}>Observe</Button>
+
                 </div>
             </div>
         );

@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {castVote, getAllOffers, getUserCreatedOffers, getUserVotedOffers} from '../util/APIUtils';
+import {
+    castVote,
+    getAllOffers,
+    getUserCreatedOffers,
+    getUserVotedOffers,
+    setOfferAsArchived,
+    setOfferAsObserved
+} from '../util/APIUtils';
 import Offer from './Offer';
 import LoadingIndicator from '../common/LoadingIndicator';
 import {Button, Icon, notification} from 'antd';
@@ -18,6 +25,8 @@ class OffersList extends Component {
             totalPages: 0,
             last: true,
             currentVotes: [],
+            observeType: null,
+            makeArchive: false,
             isLoading: false
         };
         this.loadOfferList = this.loadOfferList.bind(this);
@@ -29,8 +38,16 @@ class OffersList extends Component {
         if (this.props.username) {
             if (this.props.type === 'USER_CREATED_POLLS') {
                 promise = getUserCreatedOffers(this.props.username, page, size);
+                this.setState({
+                    observeType: "OBSERVED",
+                    makeArchive: true
+                })
+                ;
             } else if (this.props.type === 'USER_VOTED_POLLS') {
                 promise = getUserVotedOffers(this.props.username, page, size);
+                this.setState({
+                    observeType: "OBSERVED"
+                });
             }
         }
         else {
@@ -146,15 +163,106 @@ class OffersList extends Component {
         });
     }
 
+    handleObservedOfferSubmit(event, offerIndex) {
+        event.preventDefault();
+        if (!this.props.isAuthenticated) {
+            this.props.history.push("/login");
+            notification.info({
+                message: 'PutService',
+                description: "Please login to vote.",
+            });
+            return;
+        }
+
+        const offer = this.state.offers[offerIndex];
+
+
+        const observedOfferData = {
+            offerId: offer.id
+        };
+
+        setOfferAsObserved(observedOfferData)
+            .then(response => {
+                if (response === true) {
+                    notification.info({
+                        message: 'PutService',
+                        description: "Offer has been observed.",
+                    });
+                } else {
+                    notification.info({
+                        message: 'PutService',
+                        description: "This offer is already being watched.",
+                    });
+                }
+            }).catch(error => {
+            if (error.status === 401) {
+                this.props.handleLogout('/login', 'error', 'You have been logged out. Please login to vote');
+            } else {
+                notification.error({
+                    message: 'PutSerivce',
+                    description: error.message || 'Sorry! Something went wrong. Please try again!'
+                });
+            }
+        });
+    }
+
+    handleArchiveOfferSubmit(event, offerIndex) {
+        event.preventDefault();
+        if (!this.props.isAuthenticated) {
+            this.props.history.push("/login");
+            notification.info({
+                message: 'PutService',
+                description: "Please login to vote22.",
+            });
+            return;
+        }
+
+        const offer = this.state.offers[offerIndex];
+
+
+        const archivedOfferData = {
+            offerId: offer.id
+        };
+
+        setOfferAsArchived(archivedOfferData)
+            .then(response => {
+                if (response === true || response === 1) {
+                    notification.info({
+                        message: 'PutService',
+                        description: "Offer has been archived.",
+                    });
+                } else {
+                    notification.info({
+                        message: 'PutService',
+                        description: "This offer is already being archived.",
+                    });
+                }
+            }).catch(error => {
+            if (error.status === 401) {
+                this.props.handleLogout('/login', 'error', 'You have been logged out. Please login to vote');
+            } else {
+                notification.error({
+                    message: 'PutSerivce',
+                    description: error.message || 'Sorry! Something went wrong. Please try again!'
+                });
+            }
+        });
+    }
+
     render() {
         const offerViews = [];
         this.state.offers.forEach((offer, offerIndex) => {
             offerViews.push(<Offer
                 key={offer.id}
                 offer={offer}
+                observeType={this.state.observeType}
+                makeArchive={this.state.makeArchive}
                 currentVote={this.state.currentVotes[offerIndex]}
                 handleVoteChange={(event) => this.handleVoteChange(event, offerIndex)}
-                handleVoteSubmit={(event) => this.handleVoteSubmit(event, offerIndex)}/>)
+                handleVoteSubmit={(event) => this.handleVoteSubmit(event, offerIndex)}
+                handleObservedOfferSubmit={(event) => this.handleObservedOfferSubmit(event, offerIndex)}
+                handleArchiveOfferSubmit={(event) => this.handleArchiveOfferSubmit(event, offerIndex)}
+            />)
         });
 
         return (

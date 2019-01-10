@@ -155,7 +155,7 @@ class ArchivedOffersList extends Component {
                 {
                     !this.state.isLoading && this.state.offers.length === 0 ? (
                         <div className="no-polls-found">
-                            <span>No offers Foundxd.</span>
+                            <span>No offers Found.</span>
                         </div>
                     ) : null
                 }

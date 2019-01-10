@@ -102,11 +102,13 @@ class Profile extends Component {
                                       size="large"
                                       className="profile-tabs">
                                     <TabPane tab={`${this.state.user.pollCount} Offers`} key="1">
-                                        <OfferList username={this.props.match.params.username}
+                                        <OfferList isAuthenticated={this.props.isAuthenticated}
+                                                   username={this.props.match.params.username}
                                                    type="USER_CREATED_POLLS"/>
                                     </TabPane>
                                     <TabPane tab={`${this.state.user.voteCount} Votes`} key="2">
-                                        <OfferList username={this.props.match.params.username} type="USER_VOTED_POLLS"/>
+                                        <OfferList isAuthenticated={this.props.isAuthenticated}
+                                                   username={this.props.match.params.username} type="USER_VOTED_POLLS"/>
                                     </TabPane>
                                 </Tabs>
                             </div>
